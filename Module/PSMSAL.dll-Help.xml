@@ -1,0 +1,923 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml" xmlns="http://msh">
+  <!-- Cmdlet: Get-PSMSALToken -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-PSMSALToken</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>PSMSALToken</command:noun>
+      <maml:description>
+        <maml:para>Generate token via MSAL library.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>PowerShell module to generate authentication tokens in Entra ID.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <!-- Parameter set: Public-AcquireTokenByUsernamePassword -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Credential -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>User credential.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+      <!-- Parameter set: Public-AcquireTokenWithDeviceCode -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: DeviceCode -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>DeviceCode</maml:name>
+          <maml:description>
+            <maml:para>Use devicecode authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+      <!-- Parameter set: Public-AcquireTokenInteractive -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Interactive -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Interactive</maml:name>
+          <maml:description>
+            <maml:para>Use interactive authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+      <!-- Parameter set: Confidential-WithCertificate -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Certificate -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Certificate</maml:name>
+          <maml:description>
+            <maml:para>Use certificate authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">X509Certificate2</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+      <!-- Parameter set: Confidential-WithSecret -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Secret -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Secret</maml:name>
+          <maml:description>
+            <maml:para>Use secret authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: RedirectUri -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>RedirectUri</maml:name>
+        <maml:description>
+          <maml:para>Redirect URI.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Authority -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Authority</maml:name>
+        <maml:description>
+          <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: AzureCloudInstance -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>AzureCloudInstance</maml:name>
+        <maml:description>
+          <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Scopes -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Scopes</maml:name>
+        <maml:description>
+          <maml:para>Scopes list.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Credential -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Credential</maml:name>
+        <maml:description>
+          <maml:para>User credential.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">PSCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: DeviceCode -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>DeviceCode</maml:name>
+        <maml:description>
+          <maml:para>Use devicecode authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Interactive -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Interactive</maml:name>
+        <maml:description>
+          <maml:para>Use interactive authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Certificate -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Certificate</maml:name>
+        <maml:description>
+          <maml:para>Use certificate authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">X509Certificate2</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Secret -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Secret</maml:name>
+        <maml:description>
+          <maml:para>Use secret authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: AsSecureString -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>AsSecureString</maml:name>
+        <maml:description>
+          <maml:para>Add SecureString token.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Redirect URI.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Scopes list.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>User credential.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use devicecode authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use interactive authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use certificate authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use secret authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Add SecureString token.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <!-- OutputType: AuthenticationResult -->
+      <command:returnValue>
+        <dev:type>
+          <maml:name>Microsoft.Identity.Client.AuthenticationResult</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token by user credential.
+
+$Credential = Get-Credential
+$Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Credential $Credential -RedirectUri "https://login.microsoftonline.com/common/oauth2/nativeclient" -Authority AzureAdMultipleOrgs</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 2  ----------</maml:title>
+        <dev:code>Get token by DeviceCode.
+
+$Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -DeviceCode</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 3  ----------</maml:title>
+        <dev:code>Get token by interactive logon.
+
+$Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Interactive</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 4  ----------</maml:title>
+        <dev:code>Get token by certificate.
+
+$Certificate = Get-PfxCertificate -FilePath /Users/mgajda/cert.pfx
+$Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Certificate $Certificate</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 5  ----------</maml:title>
+        <dev:code>Get token by secret.
+
+$Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Secret xyz</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 6  ----------</maml:title>
+        <dev:code>Get delegated graph token to send email from shared mailbox.
+
+$Params = @{
+    Scopes = @("Mail.Send.Shared","Mail.ReadWrite.Shared")
+    ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    UserCredential = $Credential
+    Authority = "AzureAdMultipleOrgs"
+    AsSecureString = $true
+}
+$Token = Get-PSMSALToken @Params
+
+Connect-MgGraph -AccessToken $Token.AsSecureString</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 7  ----------</maml:title>
+        <dev:code>Get WindowsDefenderAPI token.
+
+$Params = @{
+    Scopes = 'https://securitycenter.onmicrosoft.com/windowsatpservice/.default'
+    Certificate = $Certificate
+    TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    AzureCloudInstance = "AzurePublic"
+}
+$Token = Get-PSMSALToken @Params</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 8  ----------</maml:title>
+        <dev:code>Get Microsoft Teams API token.
+
+$Params = @{
+	Scopes = @("https://graph.microsoft.com/.default")
+    RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    Credential = $Credential
+}
+$GraphToken = Get-PSMSALToken @Params
+
+$Params = @{
+	Scopes = @("48ac35b8-9aa8-4d74-927d-1f4a14a0b239/.default")
+    RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    Credential = $Credential
+}
+$TeamsToken = Get-PSMSALToken @Params
+
+Connect-MicrosoftTeams -AccessTokens @($GraphToken.AccessToken, $TeamsToken.AccessToken)</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 9  ----------</maml:title>
+        <dev:code>Get Azure token as app.
+
+$Params = @{
+    Scopes = @("https://management.azure.com/.default")
+    RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    Certificate = $Certificate
+    TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    AzureCloudInstance = "AzurePublic"
+}
+$Token = Get-PSMSALToken @Params
+
+Connect-AzAccount -AccessToken $Token.AccessToken -AccountId $Connection.ApplicationId</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 10  ----------</maml:title>
+        <dev:code> Get Exchange Online token as app.
+
+$Params = @{
+	    Scopes = @("https://outlook.office365.com/.default")
+     TenantId = "yyyyyyyy.onmicrosoft.com"
+     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+	    Certificate = $Certificate
+ }
+ $Token = Get-PSMSALToken @Params
+
+ Connect-ExchangeOnline -AccessToken $Token.AccessToken -Organization yyyyyyyy.onmicrosoft.com</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+</helpItems>
