@@ -19,7 +19,7 @@ namespace PSMSAL
     /// <para>Get token by user credential.</para>
     ///
     /// $Credential = Get-Credential
-    /// $Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Credential $Credential -Authority AzureAdMultipleOrgs
+    /// $Token = Get-PSMSALToken -ClientId xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -Credential $Credential -RedirectUri "https://login.microsoftonline.com/common/oauth2/nativeclient" -Authority AzureAdMultipleOrgs
     /// </code>
     /// </example>
 
@@ -56,58 +56,194 @@ namespace PSMSAL
     /// </code>
     /// </example>
 
+    /// <example>
+    /// <code>
+    /// <para>Get delegated graph token to send email from shared mailbox.</para>
+    ///
+    /// $Params = @{
+    ///     Scopes = @("Mail.Send.Shared","Mail.ReadWrite.Shared")
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    ///     UserCredential = $Credential
+    ///     Authority = "AzureAdMultipleOrgs"
+    ///     AsSecureString = $true
+    /// }
+    /// $Token = Get-PSMSALToken @Params
+    ///
+    /// Connect-MgGraph -AccessToken $Token.AsSecureString
+    /// </code>
+    /// </example>
+
+    /// <example>
+    /// <code>
+    /// <para>Get WindowsDefenderAPI token.</para>
+    ///
+    /// $Params = @{
+    ///     Scopes = 'https://securitycenter.onmicrosoft.com/windowsatpservice/.default'
+    ///     Certificate = $Certificate
+    ///     TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     AzureCloudInstance = "AzurePublic"
+    /// }
+    /// $Token = Get-PSMSALToken @Params
+    /// </code>
+    /// </example>
+
+    /// <example>
+    /// <code>
+    /// <para>Get Microsoft Teams API token.</para>
+    ///
+    /// $Params = @{
+    /// 	Scopes = @("https://graph.microsoft.com/.default")
+    ///     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    ///     TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     Credential = $Credential
+    /// }
+    /// $GraphToken = Get-PSMSALToken @Params
+    ///
+    /// $Params = @{
+    /// 	Scopes = @("48ac35b8-9aa8-4d74-927d-1f4a14a0b239/.default")
+    ///     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    ///     TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     Credential = $Credential
+    /// }
+    /// $TeamsToken = Get-PSMSALToken @Params
+    ///
+    /// Connect-MicrosoftTeams -AccessTokens @($GraphToken.AccessToken, $TeamsToken.AccessToken)
+    /// </code>
+    /// </example>
+
+    /// <example>
+    /// <code>
+    /// <para>Get Azure token as app.</para>
+    ///
+    /// $Params = @{
+	///     Scopes = @("https://management.azure.com/.default")
+    ///     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+    ///     Certificate = $Certificate
+    ///     TenantId = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     AzureCloudInstance = "AzurePublic"
+    /// }
+    /// $Token = Get-PSMSALToken @Params
+    ///
+    /// Connect-AzAccount -AccessToken $Token.AccessToken -AccountId $Connection.ApplicationId
+    ///
+    /// </code>
+    /// </example>
+
+    /// <example>
+    /// <code>
+    /// <para>Get Exchange Online token as app.</para>
+    ///
+    ///$Params = @{
+    ///     Scopes = @("https://outlook.office365.com/.default")
+    ///     TenantId = "yyyyyyyy.onmicrosoft.com"
+    ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ///     Certificate = $Certificate
+    /// }
+    /// $Token = Get-PSMSALToken @Params
+    ///
+    /// Connect-ExchangeOnline -AccessToken $Token.AccessToken -Organization yyyyyyyy.onmicrosoft.com
+    ///
+    /// </code>
+    /// </example>
+
     [Cmdlet(VerbsCommon.Get,"PSMSALToken",DefaultParameterSetName="Public")]
     [OutputType(typeof(Microsoft.Identity.Client.AuthenticationResult))]
     public class GetPSMSALTokenCmdletCommand : PSCmdlet
     {
+        /// <summary>
+        /// <para type="description">Application ID.</para>
+        /// </summary>
         [Parameter(
             Mandatory = true,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public string ClientId { get; set; }
 
+        /// <summary>
+        /// <para type="description">Tenant ID.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public string TenantId { get; set; }
 
+        /// <summary>
+        /// <para type="description">Redirect URI.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public string RedirectUri { get; set; } = "https://login.microsoftonline.com/common/oauth2/nativeclient";
 
+        /// <summary>
+        /// <para type="description">Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         [ValidateSet("AzureAdMyOrg", "AzureAdMultipleOrgs")]
-        public string Authority { get; set; } = "AzureAdMultipleOrgs";
+        public string Authority { get; set; }
 
+        /// <summary>
+        /// <para type="description">AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</para>
+        /// </summary>
+        [Parameter(
+            ValueFromPipelineByPropertyName = true)]
+        [ValidateSet("AzureChina","AzureGermany","AzurePublic","AzureUsGovernment")]
+        public string AzureCloudInstance { get; set; }
+
+        /// <summary>
+        /// <para type="description">Scopes list.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public string[] Scopes { get; set; } = new string[1] {"https://graph.microsoft.com/.default"};
 
+        /// <summary>
+        /// <para type="description">User credential.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = "Public-AcquireTokenByUsernamePassword")]
         public PSCredential Credential { get; set; }
 
+        /// <summary>
+        /// <para type="description">Use devicecode authentication.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = "Public-AcquireTokenWithDeviceCode")]
         public SwitchParameter DeviceCode { get; set; }
 
+        /// <summary>
+        /// <para type="description">Use interactive authentication.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = "Public-AcquireTokenInteractive")]
         public SwitchParameter Interactive { get; set; }
 
+        /// <summary>
+        /// <para type="description">Use certificate authentication.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = "Confidential-WithCertificate")]
         public X509Certificate2 Certificate { get; set; }
 
+        /// <summary>
+        /// <para type="description">Use secret authentication.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
             ParameterSetName = "Confidential-WithSecret")]
         public string Secret { get; set; }
 
+        /// <summary>
+        /// <para type="description">Add SecureString token.</para>
+        /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public SwitchParameter AsSecureString { get; set; }
@@ -133,8 +269,7 @@ namespace PSMSAL
                 var ClientApplicationBuilder = PublicClientApplicationBuilder.Create(ClientId);
 
                 //Set Authority
-                //if(this.MyInvocation.BoundParameters.ContainsKey("Authority"))
-                if(!(String.IsNullOrEmpty(Authority)))
+                if(this.MyInvocation.BoundParameters.ContainsKey("Authority"))
                 {
                     WriteVerbose("WithAuthority");
                     switch(Authority)
@@ -144,6 +279,27 @@ namespace PSMSAL
                             break;
                         case "AzureAdMultipleOrgs":
                             ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AadAuthorityAudience.AzureAdMultipleOrgs);
+                            break;
+                    }
+                }
+
+                //Set AzureCloudInstance
+                if(this.MyInvocation.BoundParameters.ContainsKey("AzureCloudInstance"))
+                {
+                    WriteVerbose("WithAuthority-AzureCloudInstance");
+                    switch(AzureCloudInstance)
+                    {
+                        case "AzurePublic":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzurePublic,TenantId);
+                            break;
+                        case "AzureUsGovernment":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureUsGovernment,TenantId);
+                            break;
+                        case "AzureGermany":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureGermany,TenantId);
+                            break;
+                        case "AzureChina":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureChina,TenantId);
                             break;
                     }
                 }
@@ -198,7 +354,6 @@ namespace PSMSAL
                 var ClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(ClientId);
 
                 //Set Authority
-                //if(this.MyInvocation.BoundParameters.ContainsKey("Authority"))
                 if(!(String.IsNullOrEmpty(Authority)))
                 {
                     WriteVerbose("WithAuthority");
@@ -209,6 +364,27 @@ namespace PSMSAL
                             break;
                         case "AzureAdMultipleOrgs":
                             ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AadAuthorityAudience.AzureAdMultipleOrgs);
+                            break;
+                    }
+                }
+
+                //Set AzureCloudInstance
+                if(this.MyInvocation.BoundParameters.ContainsKey("AzureCloudInstance"))
+                {
+                    WriteVerbose("WithAuthority-AzureCloudInstance");
+                    switch(AzureCloudInstance)
+                    {
+                        case "AzurePublic":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzurePublic,TenantId);
+                            break;
+                        case "AzureUsGovernment":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureUsGovernment,TenantId);
+                            break;
+                        case "AzureGermany":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureGermany,TenantId);
+                            break;
+                        case "AzureChina":
+                            ClientApplicationBuilder.WithAuthority(Microsoft.Identity.Client.AzureCloudInstance.AzureChina,TenantId);
                             break;
                     }
                 }
@@ -270,7 +446,10 @@ namespace PSMSAL
                 Array.ForEach(Token.AccessToken.ToCharArray(), AccessToken.AppendChar);
                 AccessToken.MakeReadOnly();
 
-                WriteObject(AccessToken);
+                var PSToken = new PSObject(Token);
+                PSToken.Properties.Add(new PSNoteProperty("AsSecureString", AccessToken));
+                WriteObject(PSToken);
+                //WriteObject(AccessToken);
             } else {
                 WriteObject(Token);
             }

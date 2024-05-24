@@ -12,7 +12,7 @@
     RootModule = 'PSMSAL.dll'
 
     # Version number of this module.
-    ModuleVersion = '4.61.0.1'
+    ModuleVersion = '4.61.0.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
