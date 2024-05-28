@@ -151,6 +151,23 @@ namespace PSMSAL
     /// </code>
     /// </example>
 
+    /// <example>
+    /// <code>
+    /// <para>Get Bot framework token.</para>
+    ///
+    /// $Params = @{
+    /// 	Scopes = @("https://api.botframework.com/.default")
+    /// 	RedirectUri = "https://localhost"
+    /// 	Secret = "xyz"
+    /// 	TenantId = "yyyyyyyy.onmicrosoft.com"
+    /// 	ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    /// 	AzureCloudInstance = "AzurePublic"
+    /// }
+    /// $Token = Get-PSMSALToken @Params
+    ///
+    /// </code>
+    /// </example>
+
     [Cmdlet(VerbsCommon.Get,"PSMSALToken",DefaultParameterSetName="Public")]
     [OutputType(typeof(Microsoft.Identity.Client.AuthenticationResult))]
     public class GetPSMSALTokenCmdletCommand : PSCmdlet
@@ -238,7 +255,7 @@ namespace PSMSAL
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true,
-            ParameterSetName = "Confidential-WithSecret")]
+            ParameterSetName = "Confidential-WithClientSecret")]
         public string Secret { get; set; }
 
         /// <summary>
@@ -424,14 +441,14 @@ namespace PSMSAL
                 IEnumerable<string> ScopeLists = Scopes;
 
                 //AcquireTokenForClient - WithCertificate
-                if(this.ParameterSetName == "Confidential-WithCertificate")
+                if(this.MyInvocation.BoundParameters.ContainsKey("Certificate"))
                 {
                     WriteVerbose("AcquireTokenForClient-WithCertificate");
                     Token = ClientApplication.AcquireTokenForClient(ScopeLists).ExecuteAsync().Result;
                 }
 
                 //AcquireTokenForClient - WithClientSecret
-                if(this.ParameterSetName == "Confidential-WithClientSecret")
+                if(this.MyInvocation.BoundParameters.ContainsKey("Secret"))
                 {
                     WriteVerbose("AcquireTokenForClient-WithClientSecret");
                     Token = ClientApplication.AcquireTokenForClient(ScopeLists).ExecuteAsync().Result;
