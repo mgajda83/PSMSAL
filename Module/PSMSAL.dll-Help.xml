@@ -428,7 +428,7 @@
           </dev:type>
         </command:parameter>
       </command:syntaxItem>
-      <!-- Parameter set: Confidential-WithSecret -->
+      <!-- Parameter set: Confidential-WithClientSecret -->
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
@@ -909,14 +909,28 @@ Connect-AzAccount -AccessToken $Token.AccessToken -AccountId $Connection.Applica
         <dev:code> Get Exchange Online token as app.
 
 $Params = @{
-	    Scopes = @("https://outlook.office365.com/.default")
+     Scopes = @("https://outlook.office365.com/.default")
      TenantId = "yyyyyyyy.onmicrosoft.com"
      ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-	    Certificate = $Certificate
+     Certificate = $Certificate
  }
  $Token = Get-PSMSALToken @Params
 
  Connect-ExchangeOnline -AccessToken $Token.AccessToken -Organization yyyyyyyy.onmicrosoft.com</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 11  ----------</maml:title>
+        <dev:code>Get Bot framework token.
+
+$Params = @{
+	Scopes = @("https://api.botframework.com/.default")
+	RedirectUri = "https://localhost"
+	Secret = "xyz"
+	TenantId = "yyyyyyyy.onmicrosoft.com"
+	ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+	AzureCloudInstance = "AzurePublic"
+}
+$Token = Get-PSMSALToken @Params</dev:code>
       </command:example>
     </command:examples>
   </command:command>
