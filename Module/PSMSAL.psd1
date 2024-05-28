@@ -12,10 +12,10 @@
     RootModule = 'PSMSAL.dll'
 
     # Version number of this module.
-    ModuleVersion = '4.61.1.3'
+    ModuleVersion = '4.61.1.4'
 
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Core','Desktop')
 
     # ID used to uniquely identify this module
     GUID = 'f080a756-393f-4af0-987e-3cd26f35283b'
@@ -33,7 +33,7 @@
     Description = 'PowerShell module for MSAL Tokens.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    # PowerShellVersion = ''
+    PowerShellVersion = '5.1'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -42,7 +42,7 @@
     # PowerShellHostVersion = ''
 
     # Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-    # DotNetFrameworkVersion = ''
+    # DotNetFrameworkVersion = 'netstandard2.0'
 
     # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
     # CLRVersion = ''
@@ -54,7 +54,7 @@
     # RequiredModules = @()
 
     # Assemblies that must be loaded prior to importing this module
-    # RequiredAssemblies = @()
+    # RequiredAssemblies = @('Microsoft.Identity.Client')
 
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
     # ScriptsToProcess = @()
@@ -99,7 +99,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags = @('Microsoft','Identity','Microsoft.Identity.Client','AzureAD','EntraID','MSAL','OAuth','OpenIdConnect')
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/mgajda83/PSMSAL/blob/main/LICENSE'
