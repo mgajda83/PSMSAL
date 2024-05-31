@@ -64,13 +64,13 @@ namespace PSMSAL
     ///     Scopes = @("Mail.Send.Shared","Mail.ReadWrite.Shared")
     ///     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     ///     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
-    ///     UserCredential = $Credential
+    ///     Credential = $Credential
     ///     Authority = "AzureAdMultipleOrgs"
     ///     AsSecureString = $true
     /// }
     /// $Token = Get-PSMSALToken @Params
     ///
-    /// Connect-MgGraph -AccessToken $Token.AsSecureString
+    /// Connect-MgGraph -AccessToken $Token.SecureAccessToken
     /// </code>
     /// </example>
 
@@ -464,9 +464,8 @@ namespace PSMSAL
                 AccessToken.MakeReadOnly();
 
                 var PSToken = new PSObject(Token);
-                PSToken.Properties.Add(new PSNoteProperty("AsSecureString", AccessToken));
+                PSToken.Properties.Add(new PSNoteProperty("SecureAccessToken", AccessToken));
                 WriteObject(PSToken);
-                //WriteObject(AccessToken);
             } else {
                 WriteObject(Token);
             }

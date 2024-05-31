@@ -12,7 +12,7 @@
     RootModule = 'PSMSAL.dll'
 
     # Version number of this module.
-    ModuleVersion = '4.61.1.4'
+    ModuleVersion = '4.61.1.5'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core','Desktop')
@@ -90,7 +90,8 @@
     FileList = @(
         "PSMSAL.psd1",
         "PSMSAL.dll",
-        "Microsoft.Identity.Client.dll"
+        "Microsoft.Identity.Client.dll",
+        "Microsoft.IdentityModel.Abstractions.dll"
     )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
