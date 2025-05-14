@@ -12,7 +12,7 @@
     RootModule = 'PSMSAL.dll'
 
     # Version number of this module.
-    ModuleVersion = '4.70.0.6'
+    ModuleVersion = '4.72.0.7'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core','Desktop')
@@ -27,7 +27,7 @@
     CompanyName = 'Michal Gajda'
 
     # Copyright statement for this module
-    Copyright = '(c) 2024 Michal Gajda. All rights reserved.'
+    Copyright = '(c) 2025 Michal Gajda. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description = 'PowerShell module for MSAL Tokens.'
