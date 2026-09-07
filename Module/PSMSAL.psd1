@@ -12,7 +12,7 @@
     RootModule = 'PSMSAL.dll'
 
     # Version number of this module.
-    ModuleVersion = '4.84.2.8'
+    ModuleVersion = '4.87.0.8'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core','Desktop')
@@ -33,7 +33,7 @@
     Description = 'PowerShell module for MSAL Tokens.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion = '5.1'
+    PowerShellVersion = '7.2'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
