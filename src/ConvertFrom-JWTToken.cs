@@ -64,8 +64,8 @@ namespace PSMSAL
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
         {
-            WriteVerbose("Begin!");
-            WriteVerbose(this.ParameterSetName);
+            WriteVerbose("Begin ConvertFrom-JWTToken!");
+            //WriteVerbose(this.ParameterSetName);
         }
 
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called

@@ -74,16 +74,31 @@ namespace PSMSAL
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
         {
-            WriteVerbose("Begin!");
-            WriteVerbose(this.ParameterSetName);
+            WriteVerbose("Begin Get-TokenBySecret!");
+            //WriteVerbose(this.ParameterSetName);
         }
 
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
         {
+            var tokenUrl = $"https://login.microsoftonline.com/{TenantId}/oauth2/v2.0/token";
+
+            var parameters = new Dictionary<string, string>
+            {
+                { "address", tokenUrl },
+                { "client_id", ClientId },
+                { "client_secret", Secret },
+                { "grant_type", "client_credentials" },
+                { "scope", string.Join(" ", Scopes) }
+            };
+            WriteVerbose("Sending request to token endpoint: " + tokenUrl);
+            WriteVerbose("client_id: " + parameters["client_id"]);
+            WriteVerbose("grant_type: " + parameters["grant_type"]);
+            WriteVerbose("scope: " + parameters["scope"]);
+
             var httpClient = new HttpClient();
             var processRecordInBackground = Task
-                .Run(async () => await this.RequestToken(httpClient));
+                .Run(async () => await this.HttpClientRequest(httpClient, tokenUrl, parameters));
 
             // await the finalization of the BG task
             var result = processRecordInBackground.GetAwaiter().GetResult();
@@ -131,20 +146,9 @@ namespace PSMSAL
             WriteVerbose("End!");
         }
 
-        public async Task<string> RequestToken(HttpClient client)
+        public async Task<string> HttpClientRequest(HttpClient client, string url, Dictionary<string, string> parameters)
         {
-            var tokenUrl = $"https://login.microsoftonline.com/{TenantId}/oauth2/v2.0/token";
-
-            var parameters = new Dictionary<string, string>
-            {
-                { "address", tokenUrl },
-                { "client_id", ClientId },
-                { "client_secret", Secret },
-                { "grant_type", "client_credentials" },
-                { "scope", string.Join(" ", Scopes) }
-            };
-
-            var request = new HttpRequestMessage(HttpMethod.Post, tokenUrl);
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Add("Accept", "application/json");
             request.Content = new FormUrlEncodedContent(parameters);
             var response = await client.SendAsync(request);

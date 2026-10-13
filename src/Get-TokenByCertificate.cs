@@ -75,64 +75,12 @@ namespace PSMSAL
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
         {
-            WriteVerbose("Begin!");
-            WriteVerbose(this.ParameterSetName);
+            WriteVerbose("Begin Get-TokenByCertificate!");
+            //WriteVerbose(this.ParameterSetName);
         }
 
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
         protected override void ProcessRecord()
-        {
-            var httpClient = new HttpClient();
-            var processRecordInBackground = Task
-                .Run(async () => await this.RequestToken(httpClient));
-
-            // await the finalization of the BG task
-            var result = processRecordInBackground.GetAwaiter().GetResult();
-            var tokenParse = JsonNode.Parse(result);
-            var accessToken = tokenParse["access_token"]?.ToString();
-
-            // if access token is null or empty then throw error with error_description and error from tokenParse
-            if(string.IsNullOrEmpty(accessToken))
-            {
-                WriteError(new ErrorRecord(
-                    new ArgumentException(tokenParse["error_description"]?.ToString()),
-                    tokenParse["error"]?.ToString(),
-                    ErrorCategory.InvalidArgument,
-                    null));
-                return;
-            }
-
-            // return result;
-            // as access token
-            if(Output == "Token")
-            {
-                WriteObject(accessToken);
-            }
-            // as json
-            if(Output == "Json")
-            {
-                var tokenJson = JsonSerializer.Serialize(tokenParse, new JsonSerializerOptions { WriteIndented = true });
-                WriteObject(tokenJson);
-            }
-            // as object
-            if(Output == "Object")
-            {
-                var tokenObject = new PSObject();
-                foreach (var property in tokenParse.AsObject())
-                {
-                    tokenObject.Properties.Add(new PSNoteProperty(property.Key, property.Value.ToString()));
-                }
-                WriteObject(tokenObject);
-            }
-        }
-
-        // This method will be called once at the end of pipeline execution; if no input is received, this method is not called
-        protected override void EndProcessing()
-        {
-            WriteVerbose("End!");
-        }
-
-        public async Task<string> RequestToken(HttpClient client)
         {
             //JWT params
             var CertificateBase64Hash = Convert.ToBase64String(Certificate.GetCertHash());
@@ -187,6 +135,7 @@ namespace PSMSAL
             //Join the signature to the JWT with "."
             var JWT = StringToSign + "." + Convert.ToBase64String(SignatureBytes).Replace("+", "-").Replace("/", "_").TrimEnd('=');
 
+            //Send the request to the token endpoint
             var tokenUrl = $"https://login.microsoftonline.com/{TenantId}/oauth2/v2.0/token";
 
             var parameters = new Dictionary<string, string>
@@ -198,8 +147,65 @@ namespace PSMSAL
                 { "grant_type", "client_credentials" },
                 { "scope", string.Join(" ", Scopes) }
             };
+            WriteVerbose("Sending request to token endpoint: " + tokenUrl);
+            WriteVerbose("client_id: " + parameters["client_id"]);
+            WriteVerbose("grant_type: " + parameters["grant_type"]);
+            WriteVerbose("client_assertion_type: " + parameters["client_assertion_type"]);
+            WriteVerbose("scope: " + parameters["scope"]);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, tokenUrl);
+            var httpClient = new HttpClient();
+            var processRecordInBackground = Task
+                .Run(async () => await this.HttpClientRequest(httpClient, tokenUrl, parameters, JWT));
+
+            // await the finalization of the BG task
+            var result = processRecordInBackground.GetAwaiter().GetResult();
+            var tokenParse = JsonNode.Parse(result);
+            var accessToken = tokenParse["access_token"]?.ToString();
+
+            // if access token is null or empty then throw error with error_description and error from tokenParse
+            if(string.IsNullOrEmpty(accessToken))
+            {
+                WriteError(new ErrorRecord(
+                    new ArgumentException(tokenParse["error_description"]?.ToString()),
+                    tokenParse["error"]?.ToString(),
+                    ErrorCategory.InvalidArgument,
+                    null));
+                return;
+            }
+
+            // return result;
+            // as access token
+            if(Output == "Token")
+            {
+                WriteObject(accessToken);
+            }
+            // as json
+            if(Output == "Json")
+            {
+                var tokenJson = JsonSerializer.Serialize(tokenParse, new JsonSerializerOptions { WriteIndented = true });
+                WriteObject(tokenJson);
+            }
+            // as object
+            if(Output == "Object")
+            {
+                var tokenObject = new PSObject();
+                foreach (var property in tokenParse.AsObject())
+                {
+                    tokenObject.Properties.Add(new PSNoteProperty(property.Key, property.Value.ToString()));
+                }
+                WriteObject(tokenObject);
+            }
+        }
+
+        // This method will be called once at the end of pipeline execution; if no input is received, this method is not called
+        protected override void EndProcessing()
+        {
+            WriteVerbose("End!");
+        }
+
+        public async Task<string> HttpClientRequest(HttpClient client, string url, Dictionary<string, string> parameters, string JWT)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Add("Accept", "application/json");
             request.Headers.Add("Authorization", $"Bearer {JWT}");
             request.Content = new FormUrlEncodedContent(parameters);
