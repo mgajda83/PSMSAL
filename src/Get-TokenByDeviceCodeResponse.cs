@@ -63,6 +63,9 @@ namespace PSMSAL
         [ValidateSet("Token", "Json", "Object")]
         public string Output { get; set; } = "Token";
 
+        //Global variables
+        private static Helpers helpers { get; set; } = new Helpers();
+
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
         {
@@ -104,6 +107,21 @@ namespace PSMSAL
                     ErrorCategory.InvalidArgument,
                     null));
                 return;
+            }
+            else
+            {
+                WriteVerbose("Token acquired successfully.");
+                WriteVerbose("token_type: " + tokenParse["token_type"]?.ToString());
+                WriteVerbose("expires_in: " + tokenParse["expires_in"]?.ToString());
+
+                //Decode token payload
+                var payload = accessToken.Split('.')[1];
+                var decodedPayloadJSON = helpers.DecodePartToken(payload);
+                var decodedPayload = JsonNode.Parse(decodedPayloadJSON);
+
+                //Get expiration time
+                var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
+                WriteVerbose("Token expires at: " + expiryDateTime);
             }
 
             // return result;

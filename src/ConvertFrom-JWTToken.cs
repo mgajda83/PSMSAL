@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Identity.Client;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Net.Http;
 
 
@@ -59,7 +60,10 @@ namespace PSMSAL
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter AsJSON { get; set; }
+        public SwitchParameter ShowAsJson { get; set; }
+
+        //Global variables
+        private static Helpers helpers { get; set; } = new Helpers();
 
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
@@ -101,12 +105,7 @@ namespace PSMSAL
             var signature = JWTToken.Split('.')[2];
 
             //Decode Header
-            var headerData = header.Replace('-', '+').Replace('_', '/');
-            while (headerData.Length % 4 != 0)
-            {
-                headerData += '=';
-            }
-            var decodedHeaderJSON = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(headerData));
+            var decodedHeaderJSON = helpers.DecodePartToken(header);
             var decodedHeader = JsonNode.Parse(decodedHeaderJSON);
             var headerObject = new PSObject();
             foreach (var property in decodedHeader.AsObject())
@@ -116,12 +115,7 @@ namespace PSMSAL
             DecodedToken.Properties.Add(new PSNoteProperty("Header", headerObject));
 
             //Decode Payload
-            var payloadData = payload.Replace('-', '+').Replace('_', '/');
-            while (payloadData.Length % 4 != 0)
-            {
-                payloadData += '=';
-            }
-            var decodedPayloadJSON = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payloadData));
+            var decodedPayloadJSON = helpers.DecodePartToken(payload);
             var decodedPayload = JsonNode.Parse(decodedPayloadJSON);
             var payloadObject = new PSObject();
             foreach (var property in decodedPayload.AsObject())
@@ -131,31 +125,62 @@ namespace PSMSAL
             DecodedToken.Properties.Add(new PSNoteProperty("Payload", payloadObject));
 
             //Get expiration time
-            var unixTime = new DateTime(1970, 1, 1);
-            var utcTime = unixTime.AddSeconds(decodedPayload["exp"].GetValue<long>());
-            var expiryDateTime = utcTime.AddMinutes(TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).TotalMinutes);
+            var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
             DecodedToken.Properties.Add(new PSNoteProperty("ExpirationTime", expiryDateTime));
 
+            var signatureStatus = "Not Validated";
             if(ValidateSignature)
             {
+                //Get tenant configurations
+                var configurationUrl = $"{decodedPayload["iss"].ToString()}.well-known/openid-configuration";
+                WriteVerbose("Configuration URL: " + configurationUrl);
+
                 var httpClient = new HttpClient();
-                var processRecordInBackground = Task
-                    .Run(async () => await this.RequestValidateSignature(httpClient, decodedPayload["iss"].ToString(), decodedHeader["kid"].ToString()));
+                var processRecordInBackgroundConfig = Task
+                    .Run(async () => await this.HttpClientRequest(httpClient, configurationUrl));
 
                 // await the finalization of the BG task
-                var result = processRecordInBackground.GetAwaiter().GetResult();
+                var configurationResponseString = processRecordInBackgroundConfig.GetAwaiter().GetResult();
+                var configurationParse = JsonNode.Parse(configurationResponseString);
+
+                //Get keys
+                var keysUrl = configurationParse["jwks_uri"]?.ToString();
+                WriteVerbose("Keys URL: " + keysUrl);
+
+                var processRecordInBackgroundKeys = Task
+                    .Run(async () => await this.HttpClientRequest(httpClient, keysUrl));
+
+                // await the finalization of the BG task
+                var keysResponseString = processRecordInBackgroundKeys.GetAwaiter().GetResult();
+                var keysParse = JsonNode.Parse(keysResponseString);
+
+                var keys = keysParse["keys"]?.AsArray();
+
+                var headerKid = decodedHeader["kid"]?.ToString();
+                WriteVerbose("Header KID: " + headerKid);
+                var keyJson = "";
+                foreach(var key in keys)
+                {
+                    if(key["kid"]?.ToString() == headerKid)
+                    {
+                        keyJson = JsonSerializer.Serialize(key, new JsonSerializerOptions { WriteIndented = true });
+                        break;
+                    }
+                }
 
                 // if found key
                 var keyInfo = new PSObject();
-                if(!string.IsNullOrEmpty(result))
+                if(!string.IsNullOrEmpty(keyJson))
                 {
-                    var keyParse = JsonNode.Parse(result);
+                    var keyParse = JsonNode.Parse(keyJson);
                     foreach (var property in keyParse.AsObject())
                     {
                         keyInfo.Properties.Add(new PSNoteProperty(property.Key, property.Value.ToString()));
                     }
 
                     var x5c = JsonNode.Parse(keyParse["x5c"]?.ToString())[0].ToString();
+                    WriteVerbose("X5C: " + x5c);
+
                     X509Certificate2 X509Certificate = new X509Certificate2(Convert.FromBase64String(x5c));
                     keyInfo.Properties.Add(new PSNoteProperty("X509Certificate", X509Certificate));
                     DecodedToken.Properties.Add(new PSNoteProperty("KeyInfo", keyInfo));
@@ -164,19 +189,11 @@ namespace PSMSAL
                     var rsa = new System.Security.Cryptography.RSACryptoServiceProvider();
                     var rsaParameters = new System.Security.Cryptography.RSAParameters();
 
-                    var kayNData = keyParse["n"]?.ToString().Replace('-', '+').Replace('_', '/');
-                    while (kayNData.Length % 4 != 0)
-                    {
-                        kayNData += '=';
-                    }
-                    rsaParameters.Modulus = Convert.FromBase64String(kayNData);
+                    var keyNData = helpers.DecodePartTokenToBytes(keyParse["n"]?.ToString());
+                    rsaParameters.Modulus = keyNData;
 
-                    var kayEData = keyParse["e"]?.ToString().Replace('-', '+').Replace('_', '/');
-                    while (kayEData.Length % 4 != 0)
-                    {
-                        kayEData += '=';
-                    }
-                    rsaParameters.Exponent = Convert.FromBase64String(kayEData);
+                    var keyEData = helpers.DecodePartTokenToBytes(keyParse["e"]?.ToString());
+                    rsaParameters.Exponent = keyEData;
 
                     rsa.ImportParameters(rsaParameters);
 
@@ -186,40 +203,49 @@ namespace PSMSAL
                     var sha256 = System.Security.Cryptography.SHA256.Create();
                     var hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(header + "." + payload));
 
-                    var signatureData = signature.Replace('-', '+').Replace('_', '/');
-                    while (signatureData.Length % 4 != 0)
-                    {
-                        signatureData += '=';
-                    }
-                    var signatureBytes = Convert.FromBase64String(signatureData);
+                    var signatureBytes = helpers.DecodePartTokenToBytes(signature);
 
                     if(signatureDeformatter.VerifySignature(hash,signatureBytes))
                     {
-                        DecodedToken.Properties.Add(new PSNoteProperty("SignatureStatus", "Signature Verified"));
+                        signatureStatus = "Signature Verified";
                     }
                     else
                     {
-                        if(decodedPayload["aud"]?.ToString() == "https://graph.microsoft.com")
-                        {
-                            DecodedToken.Properties.Add(new PSNoteProperty("SignatureStatus", "Cant validate MSGraph token signature"));
-                        }
-                        else
-                        {
-                            DecodedToken.Properties.Add(new PSNoteProperty("SignatureStatus", "Invalid Signature"));
-                        }
+                        signatureStatus = "Cant validate token signature";
+                        WriteVerbose("Audience: " + decodedPayload["aud"]?.ToString());
                     }
+                    DecodedToken.Properties.Add(new PSNoteProperty("SignatureStatus", signatureStatus));
                 }
             }
 
-            if(AsJSON)
+            if(ShowAsJson)
             {
-                var tokenJson = JsonSerializer.Serialize(DecodedToken, new JsonSerializerOptions { WriteIndented = true });
-                WriteObject(tokenJson);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(decodedHeaderJSON);
+                Console.ResetColor();
+
+                Console.Write(".");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(decodedPayloadJSON);
+                Console.ResetColor();
+
+                Console.Write(".");
+                switch(signatureStatus)
+                {
+                    case "Signature Verified":
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    case "Cant validate token signature":
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        break;
+                }
+                Console.Write("["+ signatureStatus +"]");
+                Console.ResetColor();
             }
-            else
-            {
-                WriteObject(DecodedToken);
-            }
+            WriteObject(DecodedToken);
         }
 
         // This method will be called once at the end of pipeline execution; if no input is received, this method is not called
@@ -228,11 +254,19 @@ namespace PSMSAL
             WriteVerbose("End!");
         }
 
-       public async Task<string> RequestValidateSignature(HttpClient client, string payloadIssuer, string headerKid)
+        public async Task<string> HttpClientRequest(HttpClient client, string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "application/json");
+            var response = await client.SendAsync(request);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return responseString;
+        }
+
+       public async Task<string> RequestValidateSignature(HttpClient client, string configurationUrl, string headerKid)
         {
             //Get tenant configurations
-            var configurationUrl = $"{payloadIssuer}.well-known/openid-configuration";
-
             var configurationRequest = new HttpRequestMessage(HttpMethod.Get, configurationUrl);
             configurationRequest.Headers.Add("Accept", "application/json");
             var configurationResponse = await client.SendAsync(configurationRequest);

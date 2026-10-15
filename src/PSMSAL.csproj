@@ -8,6 +8,7 @@
     <PackageProjectUrl>https://github.com/mgajda83/PSMSAL</PackageProjectUrl>
     <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix>10</VersionSuffix>
+    <LangVersion>latest</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
