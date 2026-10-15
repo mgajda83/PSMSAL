@@ -229,7 +229,7 @@ $Params = @{
 $Token = Get-PSMSALToken @Params
 ```
 
-## Old school way (On PS5.1)
+## Old school way (for PS5.1+)
 #### Token with application permission by secret
 ```
 $Token = Get-TokenBySecret -ClientId $ApplicationID -TenantId $TenantID -Secret $Secret
