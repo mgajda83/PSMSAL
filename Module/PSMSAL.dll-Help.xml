@@ -1,5 +1,147 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <helpItems schema="maml" xmlns="http://msh">
+  <!-- Cmdlet: ConvertFrom-JWTToken -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>ConvertFrom-JWTToken</command:name>
+      <command:verb>ConvertFrom</command:verb>
+      <command:noun>JWTToken</command:noun>
+      <maml:description>
+        <maml:para>Get JWT token information.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>PowerShell module to generate authentication tokens in Entra ID.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>ConvertFrom-JWTToken</maml:name>
+        <!-- Parameter: JWTToken -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+          <maml:name>JWTToken</maml:name>
+          <maml:description>
+            <maml:para>JWT token.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: ShowAsJson -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>ShowAsJson</maml:name>
+          <maml:description>
+            <maml:para>Output as JSON.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: ValidateSignature -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>ValidateSignature</maml:name>
+          <maml:description>
+            <maml:para>Validate the token signature.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: JWTToken -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <maml:name>JWTToken</maml:name>
+        <maml:description>
+          <maml:para>JWT token.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: ValidateSignature -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>ValidateSignature</maml:name>
+        <maml:description>
+          <maml:para>Validate the token signature.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: ShowAsJson -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>ShowAsJson</maml:name>
+        <maml:description>
+          <maml:para>Output as JSON.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>JWT token.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Validate the token signature.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Output as JSON.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token detail as JSON.
+
+$AccessToken | ConvertFrom-JWTToken -ShowAsJson</dev:code>
+      </command:example>
+      <command:example>
+        <maml:title>----------  EXAMPLE 2  ----------</maml:title>
+        <dev:code>Get token detail and validate its signature.
+
+$AccessToken | ConvertFrom-JWTToken -ValidateSignature</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
   <!-- Cmdlet: Get-PSMSALToken -->
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
     <command:details>
@@ -18,7 +160,7 @@
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
-        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
           <maml:name>ClientId</maml:name>
           <maml:description>
             <maml:para>Application ID.</maml:para>
@@ -33,7 +175,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>AsSecureString</maml:name>
           <maml:description>
-            <maml:para>Add SecureString token.</maml:para>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">SwitchParameter</command:parameterValue>
           <dev:type>
@@ -66,6 +208,19 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+        </command:parameter>
         <!-- Parameter: Credential -->
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Credential</maml:name>
@@ -82,7 +237,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>RedirectUri</maml:name>
           <maml:description>
-            <maml:para>Redirect URI.</maml:para>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string</command:parameterValue>
           <dev:type>
@@ -95,7 +250,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Scopes</maml:name>
           <maml:description>
-            <maml:para>Scopes list.</maml:para>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string[]</command:parameterValue>
           <dev:type>
@@ -116,12 +271,25 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <!-- Parameter set: Public-AcquireTokenWithDeviceCode -->
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
-        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
           <maml:name>ClientId</maml:name>
           <maml:description>
             <maml:para>Application ID.</maml:para>
@@ -136,7 +304,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>AsSecureString</maml:name>
           <maml:description>
-            <maml:para>Add SecureString token.</maml:para>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">SwitchParameter</command:parameterValue>
           <dev:type>
@@ -168,6 +336,19 @@
             <maml:name>System.String</maml:name>
             <maml:uri />
           </dev:type>
+        </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
         </command:parameter>
         <!-- Parameter: DeviceCode -->
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
@@ -186,7 +367,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>RedirectUri</maml:name>
           <maml:description>
-            <maml:para>Redirect URI.</maml:para>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string</command:parameterValue>
           <dev:type>
@@ -199,7 +380,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Scopes</maml:name>
           <maml:description>
-            <maml:para>Scopes list.</maml:para>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string[]</command:parameterValue>
           <dev:type>
@@ -220,12 +401,25 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <!-- Parameter set: Public-AcquireTokenInteractive -->
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
-        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
           <maml:name>ClientId</maml:name>
           <maml:description>
             <maml:para>Application ID.</maml:para>
@@ -240,7 +434,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>AsSecureString</maml:name>
           <maml:description>
-            <maml:para>Add SecureString token.</maml:para>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">SwitchParameter</command:parameterValue>
           <dev:type>
@@ -273,6 +467,19 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+        </command:parameter>
         <!-- Parameter: Interactive -->
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Interactive</maml:name>
@@ -290,7 +497,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>RedirectUri</maml:name>
           <maml:description>
-            <maml:para>Redirect URI.</maml:para>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string</command:parameterValue>
           <dev:type>
@@ -303,7 +510,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Scopes</maml:name>
           <maml:description>
-            <maml:para>Scopes list.</maml:para>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string[]</command:parameterValue>
           <dev:type>
@@ -324,12 +531,25 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
-      <!-- Parameter set: Confidential-WithCertificate -->
+      <!-- Parameter set: Public-AcquireTokenSilent -->
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
-        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
           <maml:name>ClientId</maml:name>
           <maml:description>
             <maml:para>Application ID.</maml:para>
@@ -344,7 +564,136 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>AsSecureString</maml:name>
           <maml:description>
-            <maml:para>Add SecureString token.</maml:para>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Authority -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Authority</maml:name>
+          <maml:description>
+            <maml:para>Authority, accept one of: AzureAdMyOrg or AzureAdMultipleOrgs.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AzureCloudInstance -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AzureCloudInstance</maml:name>
+          <maml:description>
+            <maml:para>AzureCloudInstance, accept one of: AzurePublic, AzureUsGovernment, AzureGermany or AzureChina. Require also TenantId.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: HomeAccountId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>HomeAccountId</maml:name>
+          <maml:description>
+            <maml:para>Home account ID (ObjectId.TenantId) for Acquire Token Silent.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <!-- Parameter set: Confidential-WithCertificate -->
+      <command:syntaxItem>
+        <maml:name>Get-PSMSALToken</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: AsSecureString -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>AsSecureString</maml:name>
+          <maml:description>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">SwitchParameter</command:parameterValue>
           <dev:type>
@@ -389,11 +738,24 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+        </command:parameter>
         <!-- Parameter: RedirectUri -->
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>RedirectUri</maml:name>
           <maml:description>
-            <maml:para>Redirect URI.</maml:para>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string</command:parameterValue>
           <dev:type>
@@ -406,7 +768,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Scopes</maml:name>
           <maml:description>
-            <maml:para>Scopes list.</maml:para>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string[]</command:parameterValue>
           <dev:type>
@@ -427,12 +789,25 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
       <!-- Parameter set: Confidential-WithClientSecret -->
       <command:syntaxItem>
         <maml:name>Get-PSMSALToken</maml:name>
         <!-- Parameter: ClientId -->
-        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
           <maml:name>ClientId</maml:name>
           <maml:description>
             <maml:para>Application ID.</maml:para>
@@ -447,7 +822,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>AsSecureString</maml:name>
           <maml:description>
-            <maml:para>Add SecureString token.</maml:para>
+            <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">SwitchParameter</command:parameterValue>
           <dev:type>
@@ -480,11 +855,24 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: CorrelationId -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>CorrelationId</maml:name>
+          <maml:description>
+            <maml:para>Correlation Id.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+        </command:parameter>
         <!-- Parameter: RedirectUri -->
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>RedirectUri</maml:name>
           <maml:description>
-            <maml:para>Redirect URI.</maml:para>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string</command:parameterValue>
           <dev:type>
@@ -497,7 +885,7 @@
         <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
           <maml:name>Scopes</maml:name>
           <maml:description>
-            <maml:para>Scopes list.</maml:para>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
           </maml:description>
           <command:parameterValue required="true">string[]</command:parameterValue>
           <dev:type>
@@ -530,14 +918,39 @@
             <maml:uri />
           </dev:type>
         </command:parameter>
+        <!-- Parameter: WithCache -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>WithCache</maml:name>
+          <maml:description>
+            <maml:para>Save token in cache for future use.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <!-- Parameter: ClientId -->
-      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named">
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
         <maml:name>ClientId</maml:name>
         <maml:description>
           <maml:para>Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
         </maml:description>
         <command:parameterValue required="true">string</command:parameterValue>
         <dev:type>
@@ -557,11 +970,24 @@
           <maml:uri />
         </dev:type>
       </command:parameter>
+      <!-- Parameter: CorrelationId -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>CorrelationId</maml:name>
+        <maml:description>
+          <maml:para>Correlation Id.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">Guid</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Guid</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>00000000-0000-0000-0000-000000000000</dev:defaultValue>
+      </command:parameter>
       <!-- Parameter: RedirectUri -->
       <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
         <maml:name>RedirectUri</maml:name>
         <maml:description>
-          <maml:para>Redirect URI.</maml:para>
+          <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
         </maml:description>
         <command:parameterValue required="true">string</command:parameterValue>
         <dev:type>
@@ -598,7 +1024,7 @@
       <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
         <maml:name>Scopes</maml:name>
         <maml:description>
-          <maml:para>Scopes list.</maml:para>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
         </maml:description>
         <command:parameterValue required="true">string[]</command:parameterValue>
         <dev:type>
@@ -645,6 +1071,31 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <!-- Parameter: HomeAccountId -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>HomeAccountId</maml:name>
+        <maml:description>
+          <maml:para>Home account ID (ObjectId.TenantId) for Acquire Token Silent.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: WithCache -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>WithCache</maml:name>
+        <maml:description>
+          <maml:para>Save token in cache for future use.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
       <!-- Parameter: Certificate -->
       <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
         <maml:name>Certificate</maml:name>
@@ -673,7 +1124,7 @@
       <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
         <maml:name>AsSecureString</maml:name>
         <maml:description>
-          <maml:para>Add SecureString token.</maml:para>
+          <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
         </maml:description>
         <command:parameterValue required="true">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -704,11 +1155,20 @@
       </command:inputType>
       <command:inputType>
         <dev:type>
+          <maml:name>System.Guid</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Correlation Id.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
           <maml:name>System.String</maml:name>
           <maml:uri />
         </dev:type>
         <maml:description>
-          <maml:para>Redirect URI.</maml:para>
+          <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
         </maml:description>
       </command:inputType>
       <command:inputType>
@@ -735,7 +1195,7 @@
           <maml:uri />
         </dev:type>
         <maml:description>
-          <maml:para>Scopes list.</maml:para>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
         </maml:description>
       </command:inputType>
       <command:inputType>
@@ -767,6 +1227,24 @@
       </command:inputType>
       <command:inputType>
         <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Home account ID (ObjectId.TenantId) for Acquire Token Silent.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Save token in cache for future use.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
           <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
           <maml:uri />
         </dev:type>
@@ -789,7 +1267,7 @@
           <maml:uri />
         </dev:type>
         <maml:description>
-          <maml:para>Add SecureString token.</maml:para>
+          <maml:para>Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</maml:para>
         </maml:description>
       </command:inputType>
     </command:inputTypes>
@@ -843,13 +1321,13 @@ $Params = @{
     Scopes = @("Mail.Send.Shared","Mail.ReadWrite.Shared")
     ClientId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
     RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
-    UserCredential = $Credential
+    Credential = $Credential
     Authority = "AzureAdMultipleOrgs"
     AsSecureString = $true
 }
 $Token = Get-PSMSALToken @Params
 
-Connect-MgGraph -AccessToken $Token.AsSecureString</dev:code>
+Connect-MgGraph -AccessToken $Token.SecureAccessToken</dev:code>
       </command:example>
       <command:example>
         <maml:title>----------  EXAMPLE 7  ----------</maml:title>
@@ -931,6 +1409,1027 @@ $Params = @{
 	AzureCloudInstance = "AzurePublic"
 }
 $Token = Get-PSMSALToken @Params</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+  <!-- Cmdlet: Get-TokenByCertificate -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-TokenByCertificate</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TokenByCertificate</command:noun>
+      <maml:description>
+        <maml:para>Get OAuth access token using client certificate.</maml:para>
+      </maml:description>
+    </command:details>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>Get-TokenByCertificate</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Client/Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Certificate -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Certificate</maml:name>
+          <maml:description>
+            <maml:para>Use certificate authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">X509Certificate2</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Output -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Output</maml:name>
+          <maml:description>
+            <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Token</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Scopes -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Scopes</maml:name>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Certificate -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Certificate</maml:name>
+        <maml:description>
+          <maml:para>Use certificate authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">X509Certificate2</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Output -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Output</maml:name>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Token</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Security.Cryptography.X509Certificates.X509Certificate2</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use certificate authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token by app certificate.
+
+$Certificate = Get-PfxCertificate -FilePath ./Certificate.pfx
+$TenantId = "12345678-1234-1234-1234-1234567890ab"
+$ApplicationId = "12345678-1234-1234-1234-1234567890ab"
+$Scope = 'https://graph.microsoft.com/.default'
+
+#Token
+$AccessToken = Get-TokenByCertificate -Certificate $Certificate -TenantId $TenantId -ApplicationId $ApplicationId -Scope $Scope
+$AccessToken</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+  <!-- Cmdlet: Get-TokenByDeviceCodeRequest -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-TokenByDeviceCodeRequest</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TokenByDeviceCodeRequest</command:noun>
+      <maml:description>
+        <maml:para>Get OAuth access token using device code - Request.</maml:para>
+      </maml:description>
+    </command:details>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>Get-TokenByDeviceCodeRequest</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Client/Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Scopes -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Scopes</maml:name>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token by user credential.
+
+$TenantId = "12345678-1234-1234-1234-1234567890ab"
+$ApplicationId = "12345678-1234-1234-1234-1234567890ab"
+$Scope = "Mail.Send.Shared Mail.ReadWrite.Shared"
+
+#Token
+$Request = Get-TokenByDeviceCodeRequest -TenantId $TenantId -ApplicationId $ApplicationId -Scope $Scope
+$Request</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+  <!-- Cmdlet: Get-TokenByDeviceCodeResponse -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-TokenByDeviceCodeResponse</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TokenByDeviceCodeResponse</command:noun>
+      <maml:description>
+        <maml:para>Get OAuth access token using device code - Response.</maml:para>
+      </maml:description>
+    </command:details>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>Get-TokenByDeviceCodeResponse</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Client/Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: DeviceCode -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>DeviceCode</maml:name>
+          <maml:description>
+            <maml:para>Device code from request.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Output -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Output</maml:name>
+          <maml:description>
+            <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Token</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: DeviceCode -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>DeviceCode</maml:name>
+        <maml:description>
+          <maml:para>Device code from request.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Output -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Output</maml:name>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Token</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Device code from request.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token by user credential.
+
+$TenantId = "12345678-1234-1234-1234-1234567890ab"
+$ApplicationId = "12345678-1234-1234-1234-1234567890ab"
+$DeviceCode = "Device Code returned by Get-TokenByDeviceCodeRequest"
+
+#Token
+$AccessToken = Get-TokenByDeviceCodeResponse -TenantId $TenantId -ApplicationId $ApplicationId -DeviceCode $DeviceCode
+$AccessToken</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+  <!-- Cmdlet: Get-TokenBySecret -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-TokenBySecret</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TokenBySecret</command:noun>
+      <maml:description>
+        <maml:para>Get OAuth access token using client secret.</maml:para>
+      </maml:description>
+    </command:details>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>Get-TokenBySecret</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Client/Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Output -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Output</maml:name>
+          <maml:description>
+            <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Token</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Secret -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Secret</maml:name>
+          <maml:description>
+            <maml:para>Use secret authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Scopes -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Scopes</maml:name>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Secret -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Secret</maml:name>
+        <maml:description>
+          <maml:para>Use secret authentication.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Output -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Output</maml:name>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Token</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Use secret authentication.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token using app secret.
+
+$Secret = "12345~"
+$TenantId = "12345678-1234-1234-1234-1234567890ab"
+$ApplicationId = "12345678-1234-1234-1234-1234567890ab"
+$Scope = "https://graph.microsoft.com/.default"
+
+#Token
+$AccessToken = Get-TokenBySecret -TenantId $TenantId -ApplicationId $ApplicationId -Secret $Secret -Scope $Scope
+$AccessToken</dev:code>
+      </command:example>
+    </command:examples>
+  </command:command>
+  <!-- Cmdlet: Get-TokenByUserPassword -->
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">
+    <command:details>
+      <command:name>Get-TokenByUserPassword</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>TokenByUserPassword</command:noun>
+      <maml:description>
+        <maml:para>Get OAuth access token using username and password.</maml:para>
+      </maml:description>
+    </command:details>
+    <command:syntax>
+      <!-- Parameter set: __AllParameterSets -->
+      <command:syntaxItem>
+        <maml:name>Get-TokenByUserPassword</maml:name>
+        <!-- Parameter: ClientId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+          <maml:name>ClientId</maml:name>
+          <maml:description>
+            <maml:para>Client/Application ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: TenantId -->
+        <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>TenantId</maml:name>
+          <maml:description>
+            <maml:para>Tenant ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Credential -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>User credential.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>System.Management.Automation.PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+        </command:parameter>
+        <!-- Parameter: Output -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Output</maml:name>
+          <maml:description>
+            <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>Token</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: RedirectUri -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>RedirectUri</maml:name>
+          <maml:description>
+            <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+        </command:parameter>
+        <!-- Parameter: Scopes -->
+        <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+          <maml:name>Scopes</maml:name>
+          <maml:description>
+            <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true">string[]</command:parameterValue>
+          <dev:type>
+            <maml:name>System.String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <!-- Parameter: ClientId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ClientId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByValue, ByPropertyName)" position="named" aliases="ApplicationId">
+        <maml:name>ApplicationId</maml:name>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+          <maml:para>This is an alias of the ClientId parameter.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: TenantId -->
+      <command:parameter required="true" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>TenantId</maml:name>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: RedirectUri -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>RedirectUri</maml:name>
+        <maml:description>
+          <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://login.microsoftonline.com/common/oauth2/nativeclient</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Scopes -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Scopes</maml:name>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string[]</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>https://graph.microsoft.com/.default</dev:defaultValue>
+      </command:parameter>
+      <!-- Parameter: Credential -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Credential</maml:name>
+        <maml:description>
+          <maml:para>User credential.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">PSCredential</command:parameterValue>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+      </command:parameter>
+      <!-- Parameter: Output -->
+      <command:parameter required="false" globbing="false" pipelineInput="true (ByPropertyName)" position="named">
+        <maml:name>Output</maml:name>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true">string</command:parameterValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>Token</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Client/Application ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Tenant ID.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Scopes list. Default is 'https://graph.microsoft.com/.default'.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSCredential</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>User credential.</maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <maml:description>
+          <maml:para>Set output format. Just accesstoken, json or PSObject.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues />
+    <command:examples>
+      <command:example>
+        <maml:title>----------  EXAMPLE 1  ----------</maml:title>
+        <dev:code>Get token using user credential.
+
+$Credential = Get-Credential user@domain.pl
+$TenantId = "12345678-1234-1234-1234-1234567890ab"
+$ApplicationId = "12345678-1234-1234-1234-1234567890ab"
+$Scope = "Mail.Send.Shared Mail.ReadWrite.Shared"
+$RedirectUri = "https://login.microsoftonline.com/common/oauth2/nativeclient"
+
+#Token
+$AccessToken = Get-TokenByUserPassword -TenantId $TenantId -ApplicationId $ApplicationId -Credential $Credential -Scope $Scope -RedirectUri $RedirectUri
+$AccessToken</dev:code>
       </command:example>
     </command:examples>
   </command:command>
