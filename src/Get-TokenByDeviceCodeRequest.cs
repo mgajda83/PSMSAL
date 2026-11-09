@@ -29,7 +29,7 @@ namespace PSMSAL
     public class GetTokenByDeviceCodeRequestCmdletCommand : PSCmdlet
     {
         /// <summary>
-        /// <para type="description">Application ID.</para>
+        /// <para type="description">Client/Application ID.</para>
         /// </summary>
         [Alias("ApplicationId")]
         [Parameter(
@@ -47,7 +47,7 @@ namespace PSMSAL
         public string TenantId { get; set; }
 
         /// <summary>
-        /// <para type="description">Scopes list.</para>
+        /// <para type="description">Scopes list. Default is 'https://graph.microsoft.com/.default'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]

@@ -33,7 +33,7 @@ namespace PSMSAL
     public class GetTokenByUserPasswordCmdletCommand : PSCmdlet
     {
         /// <summary>
-        /// <para type="description">Application ID.</para>
+        /// <para type="description">Client/Application ID.</para>
         /// </summary>
         [Alias("ApplicationId")]
         [Parameter(
@@ -51,14 +51,14 @@ namespace PSMSAL
         public string TenantId { get; set; }
 
         /// <summary>
-        /// <para type="description">Redirect URI.</para>
+        /// <para type="description">Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public string RedirectUri { get; set; } = "https://login.microsoftonline.com/common/oauth2/nativeclient";
 
         /// <summary>
-        /// <para type="description">Scopes list.</para>
+        /// <para type="description">Scopes list. Default is 'https://graph.microsoft.com/.default'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
@@ -72,15 +72,12 @@ namespace PSMSAL
         public PSCredential Credential { get; set; }
 
         /// <summary>
-        /// <para type="description">Set output format.</para>
+        /// <para type="description">Set output format. Just accesstoken, json or PSObject.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         [ValidateSet("Token", "Json", "Object")]
         public string Output { get; set; } = "Token";
-
-        //Global variables
-        private static Helpers helpers { get; set; } = new Helpers();
 
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
@@ -137,11 +134,12 @@ namespace PSMSAL
 
                 //Decode token payload
                 var payload = accessToken.Split('.')[1];
-                var decodedPayloadJSON = helpers.DecodePartToken(payload);
+                var decodedPayloadJSON = DecodeTokenHelper.DecodePartToken(payload);
                 var decodedPayload = JsonNode.Parse(decodedPayloadJSON);
 
                 //Get expiration time
-                var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
+                //var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
+                var expiryDateTime = DecodeTokenHelper.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
                 WriteVerbose("Token expires at: " + expiryDateTime);
             }
 

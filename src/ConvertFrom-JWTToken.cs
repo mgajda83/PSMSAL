@@ -24,7 +24,7 @@ namespace PSMSAL
     /// <code>
     /// <para>Get token detail as JSON.</para>
     ///
-    /// $AccessToken | ConvertFrom-JWTToken -AsJSON
+    /// $AccessToken | ConvertFrom-JWTToken -ShowAsJson
     /// </code>
     /// </example>
 
@@ -61,9 +61,6 @@ namespace PSMSAL
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         public SwitchParameter ShowAsJson { get; set; }
-
-        //Global variables
-        private static Helpers helpers { get; set; } = new Helpers();
 
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
@@ -105,7 +102,7 @@ namespace PSMSAL
             var signature = JWTToken.Split('.')[2];
 
             //Decode Header
-            var decodedHeaderJSON = helpers.DecodePartToken(header);
+            var decodedHeaderJSON = DecodeTokenHelper.DecodePartToken(header);
             var decodedHeader = JsonNode.Parse(decodedHeaderJSON);
             var headerObject = new PSObject();
             foreach (var property in decodedHeader.AsObject())
@@ -115,7 +112,7 @@ namespace PSMSAL
             DecodedToken.Properties.Add(new PSNoteProperty("Header", headerObject));
 
             //Decode Payload
-            var decodedPayloadJSON = helpers.DecodePartToken(payload);
+            var decodedPayloadJSON = DecodeTokenHelper.DecodePartToken(payload);
             var decodedPayload = JsonNode.Parse(decodedPayloadJSON);
             var payloadObject = new PSObject();
             foreach (var property in decodedPayload.AsObject())
@@ -125,7 +122,7 @@ namespace PSMSAL
             DecodedToken.Properties.Add(new PSNoteProperty("Payload", payloadObject));
 
             //Get expiration time
-            var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
+            var expiryDateTime = DecodeTokenHelper.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
             DecodedToken.Properties.Add(new PSNoteProperty("ExpirationTime", expiryDateTime));
 
             var signatureStatus = "Not Validated";
@@ -189,10 +186,10 @@ namespace PSMSAL
                     var rsa = new System.Security.Cryptography.RSACryptoServiceProvider();
                     var rsaParameters = new System.Security.Cryptography.RSAParameters();
 
-                    var keyNData = helpers.DecodePartTokenToBytes(keyParse["n"]?.ToString());
+                    var keyNData = DecodeTokenHelper.DecodePartTokenToBytes(keyParse["n"]?.ToString());
                     rsaParameters.Modulus = keyNData;
 
-                    var keyEData = helpers.DecodePartTokenToBytes(keyParse["e"]?.ToString());
+                    var keyEData = DecodeTokenHelper.DecodePartTokenToBytes(keyParse["e"]?.ToString());
                     rsaParameters.Exponent = keyEData;
 
                     rsa.ImportParameters(rsaParameters);
@@ -203,7 +200,7 @@ namespace PSMSAL
                     var sha256 = System.Security.Cryptography.SHA256.Create();
                     var hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(header + "." + payload));
 
-                    var signatureBytes = helpers.DecodePartTokenToBytes(signature);
+                    var signatureBytes = DecodeTokenHelper.DecodePartTokenToBytes(signature);
 
                     if(signatureDeformatter.VerifySignature(hash,signatureBytes))
                     {
@@ -220,7 +217,7 @@ namespace PSMSAL
 
             if(ShowAsJson)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write(decodedHeaderJSON);
                 Console.ResetColor();
 

@@ -30,7 +30,7 @@ namespace PSMSAL
     public class GetTokenByDeviceCodeResponseCmdletCommand : PSCmdlet
     {
         /// <summary>
-        /// <para type="description">Application ID.</para>
+        /// <para type="description">Client/Application ID.</para>
         /// </summary>
         [Alias("ApplicationId")]
         [Parameter(
@@ -56,15 +56,12 @@ namespace PSMSAL
         public string DeviceCode { get; set; }
 
         /// <summary>
-        /// <para type="description">Set output format.</para>
+        /// <para type="description">Set output format. Just accesstoken, json or PSObject.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
         [ValidateSet("Token", "Json", "Object")]
         public string Output { get; set; } = "Token";
-
-        //Global variables
-        private static Helpers helpers { get; set; } = new Helpers();
 
         // This method gets called once for each cmdlet in the pipeline when the pipeline starts executing
         protected override void BeginProcessing()
@@ -116,11 +113,11 @@ namespace PSMSAL
 
                 //Decode token payload
                 var payload = accessToken.Split('.')[1];
-                var decodedPayloadJSON = helpers.DecodePartToken(payload);
+                var decodedPayloadJSON = DecodeTokenHelper.DecodePartToken(payload);
                 var decodedPayload = JsonNode.Parse(decodedPayloadJSON);
 
                 //Get expiration time
-                var expiryDateTime = helpers.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
+                var expiryDateTime = DecodeTokenHelper.GetExpirationTime(decodedPayload["exp"].GetValue<long>());
                 WriteVerbose("Token expires at: " + expiryDateTime);
             }
 

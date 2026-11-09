@@ -12,7 +12,7 @@
 	RootModule = 'PSMSAL.dll'
 
 	# Version number of this module.
-	ModuleVersion = '4.90.1.11'
+	ModuleVersion = '4.92.0.12'
 
 	# Supported PSEditions
 	CompatiblePSEditions = @('Core','Desktop')
@@ -33,7 +33,7 @@
 	Description = 'PowerShell module for MSAL Tokens (only for PowerShell 7+). For PowerShell 5.1, use "old school" functions.'
 
 	# Minimum version of the Windows PowerShell engine required by this module
-	PowerShellVersion = ''
+	PowerShellVersion = '5.1'
 
 	# Name of the Windows PowerShell host required by this module
 	# PowerShellHostName = ''
@@ -92,11 +92,12 @@
 		"PSMSAL.dll",
 		"Microsoft.Identity.Client.dll",
 		"Microsoft.IdentityModel.Abstractions.dll",
-		"OldSchool\Get-TokenByCertificate.ps1",
-		"OldSchool\Get-TokenByDeviceCode.ps1",
-		"OldSchool\Get-TokenBySecret.ps1",
-		"OldSchool\Get-TokenByUserPassword.ps1",
-		"OldSchool\ConvertFrom-JWTToken.ps1"
+		"Microsoft.Identity.Client.Extensions.Msal.dll",
+		"PS\Get-TokenByCertificate.ps1",
+		"PS\Get-TokenByDeviceCode.ps1",
+		"PS\Get-TokenBySecret.ps1",
+		"PS\Get-TokenByUserPassword.ps1",
+		"PS\ConvertFrom-JWTToken.ps1"
 	)
 
 	# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.

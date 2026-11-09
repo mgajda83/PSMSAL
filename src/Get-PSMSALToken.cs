@@ -7,6 +7,7 @@ using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
+using System.Linq;
 
 namespace PSMSAL
 {
@@ -198,7 +199,7 @@ namespace PSMSAL
         public System.Guid CorrelationId { get; set; }
 
         /// <summary>
-        /// <para type="description">Redirect URI.</para>
+        /// <para type="description">Redirect URI. Default is 'https://login.microsoftonline.com/common/oauth2/nativeclient'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
@@ -221,7 +222,7 @@ namespace PSMSAL
         public string AzureCloudInstance { get; set; }
 
         /// <summary>
-        /// <para type="description">Scopes list.</para>
+        /// <para type="description">Scopes list. Default is 'https://graph.microsoft.com/.default'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
@@ -252,6 +253,21 @@ namespace PSMSAL
         public SwitchParameter Interactive { get; set; }
 
         /// <summary>
+        /// <para type="description">Home account ID (ObjectId.TenantId) for Acquire Token Silent.</para>
+        /// </summary>
+        [Parameter(
+            ValueFromPipelineByPropertyName = true,
+            ParameterSetName = "Public-AcquireTokenSilent")]
+        public string HomeAccountId { get; set; }
+
+        /// <summary>
+        /// <para type="description">Save token in cache for future use.</para>
+        /// </summary>
+        [Parameter(
+            ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter WithCache { get; set; }
+
+        /// <summary>
         /// <para type="description">Use certificate authentication.</para>
         /// </summary>
         [Parameter(
@@ -268,7 +284,7 @@ namespace PSMSAL
         public string Secret { get; set; }
 
         /// <summary>
-        /// <para type="description">Add SecureString token.</para>
+        /// <para type="description">Add SecureString token. Helpful for 'Connect-MgGraph -AccessToken $Token.SecureAccessToken'.</para>
         /// </summary>
         [Parameter(
             ValueFromPipelineByPropertyName = true)]
@@ -280,7 +296,7 @@ namespace PSMSAL
             WriteVerbose("Begin!");
             WriteVerbose(this.ParameterSetName);
 
-                        // obtain reference to calling assembly
+            // obtain reference to calling assembly
             var caller = Assembly.GetCallingAssembly();
 
             // locate the PSVersionInfo type
@@ -311,6 +327,18 @@ namespace PSMSAL
         {
             //Initialize result
             AuthenticationResult Token = null;
+
+            //Parse CorrelationId if provided
+            if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
+            {
+                WriteVerbose("TryParse CorrelationId");
+                if(!(Guid.TryParse(CorrelationId.ToString(), out var parsedGuid) && parsedGuid != Guid.Empty))
+                {
+                    Guid newGuid = Guid.NewGuid();
+                    WriteVerbose("Can't parse CorrelationId. Use new guid: " + newGuid.ToString());
+                    CorrelationId = newGuid;
+                }
+            }
 
             //Public application
             if(this.ParameterSetName.StartsWith("Public-"))
@@ -371,99 +399,127 @@ namespace PSMSAL
 
                 //Build application
                 IPublicClientApplication ClientApplication = ClientApplicationBuilder.Build();
+                if(WithCache)
+                {
+                    WriteVerbose("WithCache-UserTokenCache");
+                    MsalCacheHelper.EnableSerializationUsrAsync(ClientApplication.UserTokenCache)
+                        .GetAwaiter()
+                        .GetResult();
+                }
 
                 //Set Scopes
                 IEnumerable<string> ScopeLists = Scopes;
+
+
+                //AcquireTokenSilent
+                if(this.ParameterSetName == "Public-AcquireTokenSilent")
+                {
+                    WriteVerbose("AcquireTokenSilent");
+
+                    WriteVerbose("List cached accounts:");
+                    IEnumerable<IAccount> accounts = ClientApplication
+                        .GetAccountsAsync()
+                        .GetAwaiter()
+                        .GetResult();
+                    foreach(IAccount account in accounts)
+                    {
+                        // Access the home account ID details
+                        string identifier = account.HomeAccountId.Identifier; // e.g., "object-id.tenant-id"
+
+                        WriteVerbose($"Username: {account.Username}, HomeAccountId: {identifier}");
+                    }
+                    //IAccount accountFromId = accounts.FirstOrDefault();
+
+                    WriteVerbose("Searching for account: " + HomeAccountId);
+                    IAccount accountFromId = ClientApplication
+                        .GetAccountAsync(HomeAccountId)
+                        .GetAwaiter()
+                        .GetResult();
+
+                    if(accountFromId != null)
+                    {
+                        WriteVerbose("Found account in cache: " + accountFromId.Username);
+                        AcquireTokenSilentParameterBuilder ClientApplicationParameter = ClientApplication.AcquireTokenSilent(ScopeLists, accountFromId);
+
+                        if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
+                        {
+                            WriteVerbose("WithCorrelationId");
+                            ClientApplicationParameter.WithCorrelationId(CorrelationId);
+                        }
+
+                        Token = ClientApplicationParameter
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+                    } else
+                    {
+                        throw new Exception("No account found in cache for AcquireTokenSilent. Remember to use WithCache parameter first.");
+                    }
+                }
 
                 //AcquireTokenByUsernamePassword
                 if(this.ParameterSetName == "Public-AcquireTokenByUsernamePassword")
                 {
                     WriteVerbose("AcquireTokenByUsernamePassword");
+                    AcquireTokenByUsernamePasswordParameterBuilder ClientApplicationParameter = ClientApplication.AcquireTokenByUsernamePassword(ScopeLists,Credential.UserName,Credential.Password);
 
                     if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
                     {
                         WriteVerbose("WithCorrelationId");
-                        if(Guid.TryParse(CorrelationId.ToString(), out var parsedGuid) && parsedGuid != Guid.Empty)
-                        {
-                            Token = ClientApplication
-                                .AcquireTokenByUsernamePassword(ScopeLists,Credential.UserName,Credential.Password)
-                                .WithCorrelationId(CorrelationId)
-                                .ExecuteAsync()
-                                .Result;
-                        }
-                        else
-                        {
-                            Guid newGuid = Guid.NewGuid();
-                            WriteVerbose("Can't parse CorrelationId. Use new guid: " + newGuid.ToString());
-                            Token = ClientApplication
-                                .AcquireTokenByUsernamePassword(ScopeLists,Credential.UserName,Credential.Password)
-                                .WithCorrelationId(newGuid)
-                                .ExecuteAsync()
-                                .Result;
-                        }
-                    }
-                    else
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenByUsernamePassword(ScopeLists,Credential.UserName,Credential.Password)
-                            .ExecuteAsync()
-                            .Result;
+                        ClientApplicationParameter.WithCorrelationId(CorrelationId);
                     }
 
+                    Token = ClientApplicationParameter
+                        .ExecuteAsync()
+                        .GetAwaiter()
+                        .GetResult();
                 }
 
                 //AcquireTokenWithDeviceCode
                 if(this.ParameterSetName == "Public-AcquireTokenWithDeviceCode")
                 {
                     WriteVerbose("AcquireTokenWithDeviceCode");
+                    AcquireTokenWithDeviceCodeParameterBuilder ClientApplicationParameter = ClientApplication
+                        .AcquireTokenWithDeviceCode(ScopeLists,deviceCodeResult =>
+                        {
+                            Console.WriteLine(deviceCodeResult.Message);
+                            return Task.FromResult(0);
+                        });
+
                     if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
                     {
                         WriteVerbose("WithCorrelationId");
-                        Token = ClientApplication
-                            .AcquireTokenWithDeviceCode(ScopeLists,deviceCodeResult =>
-                            {
-                                Console.WriteLine(deviceCodeResult.Message);
-                                return Task.FromResult(0);
-                            })
-                            .WithCorrelationId(CorrelationId)
-                            .ExecuteAsync()
-                            .Result;
+                        ClientApplicationParameter.WithCorrelationId(CorrelationId);
                     }
-                    else
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenWithDeviceCode(ScopeLists,deviceCodeResult =>
-                            {
-                                Console.WriteLine(deviceCodeResult.Message);
-                                return Task.FromResult(0);
-                            })
-                            .ExecuteAsync()
-                            .Result;
-                    }
+
+                    Token = ClientApplicationParameter
+                        .ExecuteAsync()
+                        .GetAwaiter()
+                        .GetResult();
                 }
 
                 //AcquireTokenInteractive
                 if(this.ParameterSetName == "Public-AcquireTokenInteractive")
                 {
                     WriteVerbose("AcquireTokenInteractive");
+                    AcquireTokenInteractiveParameterBuilder ClientApplicationParameter = ClientApplication.AcquireTokenInteractive(ScopeLists);
+
                     if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
                     {
                         WriteVerbose("WithCorrelationId");
-                        Token = ClientApplication
-                            .AcquireTokenInteractive(ScopeLists)
-                            .WithCorrelationId(CorrelationId)
-                            .ExecuteAsync()
-                            .Result;
+                        ClientApplicationParameter.WithCorrelationId(CorrelationId);
                     }
-                    else
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenInteractive(ScopeLists)
-                            .ExecuteAsync()
-                            .Result;
-                    }
+
+                    Token = ClientApplicationParameter
+                        .ExecuteAsync()
+                        .GetAwaiter()
+                        .GetResult();
                 }
 
+                if(Token?.Account != null)
+                {
+                    WriteVerbose("HomeAccountId: " + Token?.Account?.Username + " (" + Token?.Account?.HomeAccountId?.Identifier +")");
+                }
             } else {
                 WriteVerbose("Confidential application buider");
                 var ClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(ClientId);
@@ -534,51 +590,44 @@ namespace PSMSAL
 
                 //Build application
                 IConfidentialClientApplication ClientApplication = ClientApplicationBuilder.Build();
+                if(WithCache)
+                {
+                    WriteVerbose("WithCache-AppTokenCache");
+                    MsalCacheHelper.EnableSerializationAppAsync(ClientApplication.AppTokenCache)
+                        .GetAwaiter()
+                        .GetResult();
+                }
 
                 //Set Scopes
                 IEnumerable<string> ScopeLists = Scopes;
 
-                //AcquireTokenForClient - WithCertificate
-                if(this.MyInvocation.BoundParameters.ContainsKey("Certificate"))
+                //AcquireTokenForClient
+                if(this.MyInvocation.BoundParameters.ContainsKey("Certificate") || this.MyInvocation.BoundParameters.ContainsKey("Secret"))
                 {
-                    WriteVerbose("AcquireTokenForClient-WithCertificate");
+                    //AcquireTokenForClient - WithCertificate
+                    if(this.MyInvocation.BoundParameters.ContainsKey("Certificate"))
+                    {
+                        WriteVerbose("AcquireTokenForClient-WithCertificate");
+                    }
+
+                    //AcquireTokenForClient - WithClientSecret
+                    if(this.MyInvocation.BoundParameters.ContainsKey("Secret"))
+                    {
+                        WriteVerbose("AcquireTokenForClient-WithClientSecret");
+                    }
+
+                    AcquireTokenForClientParameterBuilder AcquireTokenForClientParameter = ClientApplication.AcquireTokenForClient(ScopeLists);
+
                     if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
                     {
                         WriteVerbose("WithCorrelationId");
-                        Token = ClientApplication
-                            .AcquireTokenForClient(ScopeLists)
-                            .WithCorrelationId(CorrelationId)
-                            .ExecuteAsync()
-                            .Result;
+                        AcquireTokenForClientParameter.WithCorrelationId(CorrelationId);
                     }
-                    else
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenForClient(ScopeLists)
-                            .ExecuteAsync()
-                            .Result;
-                    }
-                }
 
-                //AcquireTokenForClient - WithClientSecret
-                if(this.MyInvocation.BoundParameters.ContainsKey("Secret"))
-                {
-                    WriteVerbose("AcquireTokenForClient-WithClientSecret");
-                    if(this.MyInvocation.BoundParameters.ContainsKey("CorrelationId"))
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenForClient(ScopeLists)
-                            .WithCorrelationId(CorrelationId)
-                            .ExecuteAsync()
-                            .Result;
-                    }
-                    else
-                    {
-                        Token = ClientApplication
-                            .AcquireTokenForClient(ScopeLists)
-                            .ExecuteAsync()
-                            .Result;
-                    }
+                    Token = AcquireTokenForClientParameter
+                        .ExecuteAsync()
+                        .GetAwaiter()
+                        .GetResult();
                 }
             }
 
